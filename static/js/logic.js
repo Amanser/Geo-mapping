@@ -11,11 +11,12 @@ d3.json(earthquakeURL, function(data) {
   function createFeatures(earthquakeData) {
   
     // Define a function we want to run once for each feature in the features array
-    // Give each feature a popup describing the place and time of the earthquake
+    // Give each feature a popup describing the place and magnitude of the earthquake
     function onEachFeature(feature, layer) {
       layer.bindPopup("<h3>" + "Magnitude: " + feature.properties.mag +
         "</h3><hr><p>" + feature.properties.place + "</p>");
     }
+    // Define a function to update the map markers
     function styleInfo(feature) {
         return {
           opacity: 1,
@@ -109,3 +110,4 @@ d3.json(earthquakeURL, function(data) {
     }).addTo(myMap);
   }
   
+  // @TODO Add the Legend to the map

@@ -20,10 +20,10 @@ d3.json(earthquakeURL, function(data) {
       layer.bindPopup("<h3>" + "Magnitude: " + feature.properties.mag +
         "</h3><hr><p>" + feature.properties.place + "</p>");
     }
-    // Define a function to update the map markers
+    // Define a function to update the map markers. Size of the marker is dependent on the earthquake magnitude
     function styleInfo(feature) {
         return {
-          opacity: 1,
+          opacity: 0.9,
           fillOpacity: 1,
           fillColor: getColor(feature.properties.mag),
           color: "#000000",
@@ -37,15 +37,15 @@ d3.json(earthquakeURL, function(data) {
       function getColor(magnitude) {
         switch (true) {
           case magnitude > 5:
-            return "#ea2c2c";
+            return "#d11919";
           case magnitude > 4:
-            return "#ea822c";
+            return "#d86615";
           case magnitude > 3:
-            return "#ee9c00";
+            return "#ea9917";
           case magnitude > 2:
-            return "#eecc00";
+            return "#ead116";
           case magnitude > 1:
-            return "#d4ee00";
+            return "#bddd1c";
           default:
             return "#98ee00";
         }
@@ -110,6 +110,31 @@ d3.json(earthquakeURL, function(data) {
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
-  }
   
-  // @TODO Add the Legend to the map
+  
+  // Add the Legend to the map
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd = function () {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+    magnitudes = [0, 1, 2, 3, 4, 5],
+    labels = ["#98ee00", "#bddd1c", "#ead116", "#ea9917", "#d86615", "#d11919"];
+
+    // Add title to the legend box
+    div.innerHTML = "<p>Magnitude</p><hr>"
+
+    // loop through our magnitudes and generate a label with a colored square for each interval
+    for (var i = 0; i < magnitudes.length; i++) {
+         
+      div.innerHTML +=
+            '<i style="background:' + labels[i] + '"></i> ' +
+            magnitudes[i] + (magnitudes[i + 1] ? '&ndash;' + magnitudes[i + 1] + '<br>' : '+');
+}
+
+    return div;
+    };
+
+legend.addTo(myMap);
+
+}
